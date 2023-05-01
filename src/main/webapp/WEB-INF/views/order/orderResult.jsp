@@ -137,7 +137,7 @@
 				<TR class="dot_line">
 					<TD class="fixed_join">결제방법</TD>
 					<TD>
-					   ${myOrderInfo.pay_method }
+					  	신용카드 <%-- ${myOrderInfo.pay_method } --%>
 				    </TD>
 				</TR>
 				<TR class="dot_line">

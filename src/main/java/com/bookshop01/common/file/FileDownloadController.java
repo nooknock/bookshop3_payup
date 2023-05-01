@@ -32,8 +32,8 @@ public class FileDownloadController {
 		FileInputStream in=new FileInputStream(image); 
 		byte[] buffer=new byte[1024*8];
 		while(true){
-			int count=in.read(buffer); //¹öÆÛ¿¡ ÀĞ¾îµéÀÎ ¹®ÀÚ°³¼ö
-			if(count==-1)  //¹öÆÛÀÇ ¸¶Áö¸·¿¡ µµ´ŞÇß´ÂÁö Ã¼Å©
+			int count=in.read(buffer); //ë²„í¼ì— ì½ì–´ë“¤ì¸ ë¬¸ìê°œìˆ˜
+			if(count==-1)  //ë²„í¼ì˜ ë§ˆì§€ë§‰ì— ë„ë‹¬í–ˆëŠ”ì§€ ì²´í¬
 				break;
 			out.write(buffer,0,count);
 		}

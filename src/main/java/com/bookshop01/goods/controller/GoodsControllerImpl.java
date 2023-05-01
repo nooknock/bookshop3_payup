@@ -53,7 +53,7 @@ public class GoodsControllerImpl extends BaseController   implements GoodsContro
 		keyword = keyword.toUpperCase();
 	    List<String> keywordList =goodsService.keywordSearch(keyword);
 	    
-	 // ÃÖÁ¾ ¿Ï¼ºµÉ JSONObject ¼±¾ğ(ÀüÃ¼)
+	 // ìµœì¢… ì™„ì„±ë  JSONObject ì„ ì–¸(ì „ì²´)
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("keyword", keywordList);
 		 		
@@ -75,11 +75,11 @@ public class GoodsControllerImpl extends BaseController   implements GoodsContro
 	
 	private void addGoodsInQuick(String goods_id,GoodsVO goodsVO,HttpSession session){
 		boolean already_existed=false;
-		List<GoodsVO> quickGoodsList; //ÃÖ±Ù º» »óÇ° ÀúÀå ArrayList
+		List<GoodsVO> quickGoodsList; //ìµœê·¼ ë³¸ ìƒí’ˆ ì €ì¥ ArrayList
 		quickGoodsList=(ArrayList<GoodsVO>)session.getAttribute("quickGoodsList");
 		
 		if(quickGoodsList!=null){
-			if(quickGoodsList.size() < 4){ //¹Ì¸®º» »óÇ° ¸®½ºÆ®¿¡ »óÇ°°³¼ö°¡ ¼¼°³ ÀÌÇÏÀÎ °æ¿ì
+			if(quickGoodsList.size() < 4){ //ë¯¸ë¦¬ë³¸ ìƒí’ˆ ë¦¬ìŠ¤íŠ¸ì— ìƒí’ˆê°œìˆ˜ê°€ ì„¸ê°œ ì´í•˜ì¸ ê²½ìš°
 				for(int i=0; i<quickGoodsList.size();i++){
 					GoodsVO _goodsBean=(GoodsVO)quickGoodsList.get(i);
 					if(goods_id.equals(_goodsBean.getGoods_id())){

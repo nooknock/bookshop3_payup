@@ -23,7 +23,7 @@ public class CartServiceImpl  implements CartService{
 	public Map<String ,List> myCartList(CartVO cartVO) throws Exception{
 		Map<String,List> cartMap=new HashMap<String,List>();
 		List<CartVO> myCartList=cartDAO.selectCartList(cartVO);
-		if(myCartList.size()==0){ //Ä«Æ®¿¡ ÀúÀåµÈ »óÇ°ÀÌ¾ø´Â °æ¿ì
+		if(myCartList.size()==0){ //ì¹´íŠ¸ì— ì €ì¥ëœ ìƒí’ˆì´ì—†ëŠ” ê²½ìš°
 			return null;
 		}
 		List<GoodsVO> myGoodsList=cartDAO.selectGoodsList(myCartList);
