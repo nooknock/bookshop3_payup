@@ -50,6 +50,14 @@
 	   where member_id = #{id}
 	</select>
 	
+	<select id="findId" resultType="java.util.Map">
+	  	<![CDATA[
+	   		select member_id from t_shopping_member
+	   	]]>
+	</select>
+	
+	
+	
   <insert id="insertNewMember"  parameterType="memberVO">
   <![CDATA[
     	insert into t_shopping_member(member_id,

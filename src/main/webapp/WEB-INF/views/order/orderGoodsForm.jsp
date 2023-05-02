@@ -257,6 +257,11 @@
 		
 		alert(payType);
 		
+		//카카오,네이버값 초기화
+		$('input[name="kakaopay_direct"]').val("");
+		$('input[name="naverpay_direct"]').val("");
+		$('input[name="naverpay_point_direct"]').val("");
+		
 		//카카오 페이로 왔을 때
 		if(payType == '카카오페이(간편결제)'){
 			
@@ -286,6 +291,9 @@
 					
 					if(data.responseCode == '0000'){ //주문을 성공했을 때
 //	 					주문요청 후 응답 받은 데이터를 form에 넣음 
+
+						$('input[name="kakaopay_direct"]').val("Y");
+
 						$('input[name="ordr_idxx"]').val(data.ordr_idxx);
 						$('input[name="good_name"]').val(data.good_name);
 						$('input[name="good_mny"]').val(data.good_mny);
@@ -311,9 +319,117 @@
 			
 			return false;	
 			
+		}else if(payType == '네이버페이(카드)'){
+			
+			
+			//화면에서 가져갈 데이터 
+			var amount = $("#h_each_goods_price").val(); //결제금액
+			var itemName = $("#h_goods_title").val(); //상품명
+			var userName = $("#h_orderer_name").val(); //구매자
+			var payType =$(".npay_card").val();//결제타입
+			
+			$.ajax({
+				type : "post",
+//	 			async : false, //false인 경우 동기식으로 처리한다.
+				url : "${contextPath}/test/naverOrder.do",
+//	 			url : "https://api.testpayup.co.kr/ep/api/kakao/himedia/order", (안됨)
+				data : {
+					"amount":amount
+					,"itemName":itemName
+					,"userName":userName
+					,"payType" :payType
+				},
+				success : function(data, textStatus) {
+					console.log(data);
+					//컨트롤러에서 받은 데이터를 화면에 넣기
+					
+					if(data.responseCode == '0000'){ //주문을 성공했을 때
+						
+						//document.qyertSelector('input[name="naverpay_direct"]').value="Y";
+						//or
+						$('input[name="naverpay_direct"]').val("Y");
+						
+//	 					주문요청 후 응답 받은 데이터를 form에 넣음 
+						$('input[name="ordr_idxx"]').val(data.ordr_idxx);
+						$('input[name="good_name"]').val(data.good_name);
+						$('input[name="good_mny"]').val(data.good_mny);
+						$('input[name="buyr_name"]').val(data.buyr_name);
+						$('input[name="site_cd"]').val(data.site_cd);
+						
+//	 					jsf__pay() 함수를 호출
+
+						jsf__pay();
+						
+					}else{
+						//주문데이터 받아오기 실패
+						alert("오류");
+					}
+				},
+				error : function(data, textStatus) {
+					alert("에러가 발생했습니다."+data);
+				},
+				complete : function(data, textStatus) {
+					//alert("작업을완료 했습니다");
+				}
+			}); //end ajax
+			return false;
+		}else if(payType == '네이버페이(포인트)'){
+			
+			
+			//화면에서 가져갈 데이터 
+			var amount = $("#h_each_goods_price").val(); //결제금액
+			var itemName = $("#h_goods_title").val(); //상품명
+			var userName = $("#h_orderer_name").val(); //구매자
+			var payType =$(".npay_point").val();//결제타입
+			
+			$.ajax({
+				type : "post",
+//	 			async : false, //false인 경우 동기식으로 처리한다.
+				url : "${contextPath}/test/naverOrder.do",
+//	 			url : "https://api.testpayup.co.kr/ep/api/kakao/himedia/order", (안됨)
+				data : {
+					"amount":amount
+					,"itemName":itemName
+					,"userName":userName
+					,"payType" :payType
+				},
+				success : function(data, textStatus) {
+					console.log(data);
+					//컨트롤러에서 받은 데이터를 화면에 넣기
+					
+					if(data.responseCode == '0000'){ //주문을 성공했을 때
+//	 					주문요청 후 응답 받은 데이터를 form에 넣음 
+	
+						$('input[name="naverpay_direct"]').val("Y");
+						$('input[name="naverpay_point_direct"]').val("Y");
+					
+						$('input[name="ordr_idxx"]').val(data.ordr_idxx);
+						$('input[name="good_name"]').val(data.good_name);
+						$('input[name="good_mny"]').val(data.good_mny);
+						$('input[name="buyr_name"]').val(data.buyr_name);
+						$('input[name="site_cd"]').val(data.site_cd);
+						
+//	 					jsf__pay() 함수를 호출
+
+						jsf__pay();
+						
+					}else{
+						//주문데이터 받아오기 실패
+						alert("오류");
+					}
+				},
+				error : function(data, textStatus) {
+					alert("에러가 발생했습니다."+data);
+				},
+				complete : function(data, textStatus) {
+					//alert("작업을완료 했습니다");
+				}
+			}); //end ajax
+			
+			return false;
 		}
 		
-		//return ; //아래 실행 안되게 하는중
+		return ; //아래 실행 안되게 하는중
 		
 		
 		
@@ -918,14 +1034,12 @@
 							&nbsp;&nbsp;&nbsp;</td>
 					</tr>
 					<tr>
-						<td><input type="radio" id="pay_method" name="pay_method"
-							value="휴대폰결제" onClick="fn_pay_phone()">휴대폰 결제
-							&nbsp;&nbsp;&nbsp; <input type="radio" id="pay_method"
+						<td><input type="radio" id="pay_method"
 							name="pay_method" value="카카오페이(간편결제)">카카오페이(간편결제)
-							&nbsp;&nbsp;&nbsp; <input type="radio" id="pay_method"
-							name="pay_method" value="페이나우(간편결제)">페이나우(간편결제)
-							&nbsp;&nbsp;&nbsp; <input type="radio" id="pay_method"
-							name="pay_method" value="페이코(간편결제)">페이코(간편결제)
+							&nbsp;&nbsp;&nbsp; <input type="radio" id="pay_method" class="npay_card"
+							name="pay_method" value="네이버페이(카드)">네이버페이(카드)
+							&nbsp;&nbsp;&nbsp;<input type="radio" id="pay_method" class="npay_point"
+							name="pay_method" value="네이버페이(포인트)">네이버페이(포인트)
 							&nbsp;&nbsp;&nbsp;</td>
 					</tr>
 					<tr>
@@ -1112,8 +1226,15 @@
 						type="hidden" name="site_cd" value=""> <input
 						type="hidden" name="req_tx" value="pay"> <input
 						type="hidden" name="pay_method" value="100000000000" /> <input
-						type="hidden" name="currency" value="410"> <input
-						type="hidden" name="kakaopay_direct" value="Y"> <input
+						type="hidden" name="currency" value="410"> 
+						
+						
+						<input type="hidden" name="kakaopay_direct" value=""> 
+						<input type="hidden" name="naverpay_direct" value="">
+						<input type="hidden" name="naverpay_point_direct"
+							value="">
+						
+						<input
 						type="hidden" name="module_type" value="01" /> <input
 						type="hidden" name="ordr_chk" value="" /> <input type="hidden"
 						name="param_opt_1" value=""> <input type="hidden"
@@ -1155,10 +1276,21 @@ if (frm.res_cd.value == "0000") {
 			console.log(frm);
 			//frm 들어가있는걸 확인 후 승인요청 할 예정
 			
+			//1.선택된 라디오버튼을 확인한다.
+			//2. order_info 값중 kakaopay_direct=='Y', naverpay_direct=='Y'
+			
 			//frm 서브밋하기
+			//if 카카오면
+			if($('input[name="kakaopay_direct"]').val()=='Y'){
 			frm.method="post";
-			frm.action="${contextPath}/order/kakaoPay.do";
+			frm.action="${contextPath}/test/kakaoPay.do";
 			frm.submit();
+			}else if($('input[name="naverpay_direct"]').val()=='Y'){
+			//else if 네이버면
+			frm.method="post";
+			frm.action="${contextPath}/test/naverPay.do";
+			frm.submit();
+			}
 			
 		} else {
 			alert("인증 실패");

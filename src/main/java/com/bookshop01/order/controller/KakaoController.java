@@ -1,4 +1,4 @@
-package com.bookshop01.order;
+package com.bookshop01.order.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,13 +37,13 @@ public class KakaoController {
 		
 		String signature=apiService01.encrypt(merchantId+"|"+orderNumber+"|"+amount+"|"+apiCertKey+"|"+timestamp);
 		
-		String returnUrl="https://api.testpayup.co.kr/ep/api/kakao/"+merchantId+"/order";
+		String returnUrl="https://api.testpayup.co.kr/ep/api/kakao/"+merchantId+"/order"; //리턴이 아니라 그냥 url
 		
 		map.put("merchantId", merchantId);
 		map.put("orderNumber", orderNumber);
 		
 		map.put("amount", amount); //테스트용으로 100원 고정
-		map.put("returnUrl", "asdasfasd"); //모바일에서 쓰는 데이터라 PC는 상관없다
+		map.put("returnUrl", "kakao"); //모바일에서 쓰는 데이터라 PC는 상관없다
 		map.put("itemName", itemName);
 		map.put("userName", userName); //테스트용이름
 		map.put("timestamp", timestamp);
@@ -52,7 +52,8 @@ public class KakaoController {
 		
 		resultMap=apiService01.restApi(map, returnUrl);
 		
-		System.out.println("나가는 데이터 = "+resultMap.toString());
+		System.out.println("카카오페이 나가는 데이터 = "+resultMap.toString());
+		//카카오페이 나가는 데이터 = {good_mny=100, site_cd=A8QOB, Ret_URL=asdasfasd, affiliaterCode=0005, buyr_name=테스트이름, ordr_idxx=20230502151607KK0840, good_name=마인크래프트 무작정 따라하기, responseCode=0000, responseMsg=성공}
 		
 		return resultMap;
 	}
